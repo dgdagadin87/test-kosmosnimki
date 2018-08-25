@@ -22,6 +22,7 @@
   "dependencies": {
     "css-loader": "^0.28.7",
     "history": "^4.6.3",
-    "style-loader": "^0.19.0"
+    "style-loader": "^0.19.0",
+    "ymaps": "^0.1.1"
   }
 }
