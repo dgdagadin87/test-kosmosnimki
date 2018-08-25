@@ -19,4 +19,4 @@ ymaps.load().then(maps => {
         prepareCoordinates(coordinates);
     });
 })
-.catch(error => console.log('Failed to load Yandex Maps', error));
+.catch(error => console.error('Failed to load Yandex Maps', error));
