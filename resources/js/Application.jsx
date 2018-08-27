@@ -1,9 +1,13 @@
+import '../css/chartist.css';
+
 import 'core-js/es6/map';
 import 'core-js/es6/set';
 import 'core-js/es6/promise';
 
 import ymaps from 'ymaps';
 import Axios from 'axios';
+
+import ChartistJS from 'chartist';
 
 import Request from './utils/request';
 
@@ -16,6 +20,32 @@ import {
 
 let meteoData = [];
 let currentYear = 2018;
+
+let diagram = new ChartistJS.Bar(
+    '.ct-chart',
+    {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        series: [
+            [800000, 1200000, 1400000, 1300000],
+            [200000, 400000, 500000, 300000],
+            [100000, 200000, 400000, 600000]
+        ]
+    },
+    {
+        stackBars: true,
+        axisY: {
+            labelInterpolationFnc: function(value) {
+                return (value / 1000) + 'k';
+            }
+        }
+    }).on('draw', function(data) {
+        if(data.type === 'bar') {
+            data.element.attr({
+                style: 'stroke-width: 30px'
+            });
+        }
+    }
+);
 
 ymaps.load().then(maps => {
     const map = new maps.Map('map-container', {
