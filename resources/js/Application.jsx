@@ -37,7 +37,7 @@ let diagram = new ChartistJS.Bar(
         stackBars: true
     }).on('draw', function(data) {
         if(data.type === 'bar') {
-            data.element.attr({style: 'stroke-width: 30px'});
+            data.element.attr({style: 'stroke-width: 40px'});
         }
     }
 );
