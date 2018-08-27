@@ -34,7 +34,6 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
-let labels = DIAGRAM_LABELS;
 let meteoData = [];
 let currentYear = YEAR;
 
