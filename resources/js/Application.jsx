@@ -3,15 +3,17 @@ import 'core-js/es6/set';
 import 'core-js/es6/promise';
 
 import ymaps from 'ymaps';
+import Axios from 'axios';
 
 import Request from './utils/request';
 
 import {
     prepareCoordinates,
     createGmxIdUrl,
-    serviceCallback
+    createMeteoDataUrl
 } from './utils/functions';
 
+let meteoData = [];
 
 ymaps.load().then(maps => {
     const map = new maps.Map('map-container', {
@@ -31,11 +33,17 @@ ymaps.load().then(maps => {
             data: {name: 'serviceCallback'}
         })
         .then((data) => {
+            const {features = []} = data;
+            const featureFirst = features[0] || {};
+            const {properties: { gmx_id = 0 }} = featureFirst;
+
+            return Axios.get(createMeteoDataUrl(gmx_id), {});
+        })
+        .then((data) => {
+            console.log('ddddddddddddd');
             console.log(data);
         })
-        .catch((error) => {
-            console.error(error);
-        });
+        .catch((error) => console.error('Error, ', error));
     });
 })
 .catch(error => console.error('Failed to load Yandex Maps', error));
