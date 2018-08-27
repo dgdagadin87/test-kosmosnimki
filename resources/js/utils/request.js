@@ -1,23 +1,29 @@
 import jsonp from 'jsonp';
+import Axios from 'axios';
 
 export default class Request {
 
     static send(config) {
 
-        return new Promise((resolve, reject) => {
+        const {mode = 'standart', url, data} = config;
 
-            const {url, data} = config;
+        if (mode !== 'standart') {
+            return new Promise((resolve, reject) => {
 
-            jsonp(url, data, (error, data) => {
+                jsonp(url, data, (error, data) => {
 
-                if (error) {
-                    reject(error);
-                    return;
-                }
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
 
-                resolve(data);
+                    resolve(data);
+                });
             });
-        });
+        }
+        else {
+            return Axios.get(url, data);
+        }
     }
 
 }

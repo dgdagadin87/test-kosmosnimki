@@ -6,7 +6,6 @@ import 'core-js/es6/set';
 import 'core-js/es6/promise';
 
 import ymaps from 'ymaps';
-import Axios from 'axios';
 
 import {
     YEAR,
@@ -60,6 +59,7 @@ ymaps.load().then(maps => {
         const {north, south} = preparedCoordinates;
 
         Request.send({
+            mode: 'jsonp',
             url: createGmxIdUrl(north, south),
             data: {name: CALLBACK_NAME}
         })
@@ -68,7 +68,11 @@ ymaps.load().then(maps => {
             const featureFirst = features[0] || {};
             const {properties: { gmx_id = 0 }} = featureFirst;
 
-            return Axios.get(createMeteoDataUrl(gmx_id, currentYear), {});
+            return Request.send({
+                mode: 'standart',
+                url: createMeteoDataUrl(gmx_id, currentYear),
+                data: {}
+            });
         })
         .then((data) => {
             meteoData = prepareMeteoData(data, currentYear);
