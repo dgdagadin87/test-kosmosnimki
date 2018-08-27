@@ -8,7 +8,7 @@ import 'core-js/es6/promise';
 import ymaps from 'ymaps';
 import Axios from 'axios';
 
-import ChartistJS from 'chartist';
+import Diagram from './utils/diagram';
 
 import Request from './utils/request';
 
@@ -23,24 +23,14 @@ let labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Ию�
 let meteoData = [];
 let currentYear = 2017;
 
-let diagram = new ChartistJS.Bar(
-    '.ct-chart',
-    {
-        labels: labels,
-        series: [
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        ]
-    },
-    {
-        width: 800,
-        height: 200,
-        stackBars: true
-    }).on('draw', function(data) {
-        if(data.type === 'bar') {
-            data.element.attr({style: 'stroke-width: 40px'});
-        }
-    }
-);
+const diagram = new Diagram({
+    container: '.ct-chart',
+    series: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    labels,
+    width: 800,
+    height: 200,
+    strokeWidth: 40
+});
 
 ymaps.load().then(maps => {
     const map = new maps.Map('map-container', {
@@ -69,10 +59,7 @@ ymaps.load().then(maps => {
         .then((data) => {
             meteoData = prepareMeteoData(data, currentYear);
 
-            diagram.update({
-                labels: labels,
-                series: [meteoData]
-            });
+            diagram.update(meteoData);
         })
         .catch((error) => console.error('Error, ', error));
     });
