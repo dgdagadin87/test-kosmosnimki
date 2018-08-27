@@ -9,6 +9,7 @@ import Request from './utils/request';
 
 import {
     prepareCoordinates,
+    prepareMeteoData,
     createGmxIdUrl,
     createMeteoDataUrl
 } from './utils/functions';
@@ -41,7 +42,8 @@ ymaps.load().then(maps => {
             return Axios.get(createMeteoDataUrl(gmx_id, currentYear), {});
         })
         .then((data) => {
-            console.log(data);
+            meteoData = prepareMeteoData(data, currentYear);
+            console.log(meteoData);
         })
         .catch((error) => console.error('Error, ', error));
     });
