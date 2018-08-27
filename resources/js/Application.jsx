@@ -14,6 +14,7 @@ import {
 } from './utils/functions';
 
 let meteoData = [];
+let currentYear = 2018;
 
 ymaps.load().then(maps => {
     const map = new maps.Map('map-container', {
@@ -37,10 +38,9 @@ ymaps.load().then(maps => {
             const featureFirst = features[0] || {};
             const {properties: { gmx_id = 0 }} = featureFirst;
 
-            return Axios.get(createMeteoDataUrl(gmx_id), {});
+            return Axios.get(createMeteoDataUrl(gmx_id, currentYear), {});
         })
         .then((data) => {
-            console.log('ddddddddddddd');
             console.log(data);
         })
         .catch((error) => console.error('Error, ', error));
