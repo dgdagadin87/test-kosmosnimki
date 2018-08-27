@@ -19,9 +19,9 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
-let labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'];
+let labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'];
 let meteoData = [];
-let currentYear = 2018;
+let currentYear = 2017;
 
 let diagram = new ChartistJS.Bar(
     '.ct-chart',
