@@ -19,13 +19,14 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
+let labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'];
 let meteoData = [];
 let currentYear = 2018;
 
 let diagram = new ChartistJS.Bar(
     '.ct-chart',
     {
-        labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'],
+        labels: labels,
         series: [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ]
@@ -67,7 +68,11 @@ ymaps.load().then(maps => {
         })
         .then((data) => {
             meteoData = prepareMeteoData(data, currentYear);
-            console.log(meteoData);
+
+            diagram.update({
+                labels: labels,
+                series: [meteoData]
+            });
         })
         .catch((error) => console.error('Error, ', error));
     });

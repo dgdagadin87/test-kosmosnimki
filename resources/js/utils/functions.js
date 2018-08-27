@@ -52,6 +52,16 @@ function prepareMeteoData(result, currentYear) {
         returnResult.push(avgTemperature/counter);
     }
 
+    const resultLength = returnResult.length;
+
+    if (resultLength < 12) {
+        const lengthDiff = 12 - resultLength;
+
+        for (let i = 0; i < lengthDiff; i++) {
+            returnResult.push(0);
+        }
+    }
+
     return returnResult;
 }
 
