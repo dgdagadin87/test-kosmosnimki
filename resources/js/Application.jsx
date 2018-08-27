@@ -8,6 +8,21 @@ import 'core-js/es6/promise';
 import ymaps from 'ymaps';
 import Axios from 'axios';
 
+import {
+    YEAR,
+    CALLBACK_NAME,
+    DIAGRAM_CONTAINER,
+    DIAGRAM_HEIGHT,
+    DIAGRAM_WIDTH,
+    DIAGRAM_LABELS,
+    DIAGRAM_SERIES,
+    DIAGRAM_STROKE_WIDTH,
+    MAP_CONTAINER,
+    MAP_EAST,
+    MAP_NORTH,
+    MAP_ZOOM
+} from './config/config';
+
 import Diagram from './utils/diagram';
 
 import Request from './utils/request';
@@ -19,23 +34,23 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
-let labels = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сент', 'Окт', 'Ноя', 'Дек'];
+let labels = DIAGRAM_LABELS;
 let meteoData = [];
-let currentYear = 2017;
+let currentYear = YEAR;
 
 const diagram = new Diagram({
-    container: '.ct-chart',
-    series: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    labels,
-    width: 800,
-    height: 200,
-    strokeWidth: 40
+    container: DIAGRAM_CONTAINER,
+    series: DIAGRAM_SERIES,
+    labels: DIAGRAM_LABELS,
+    width: DIAGRAM_WIDTH,
+    height: DIAGRAM_HEIGHT,
+    strokeWidth: DIAGRAM_STROKE_WIDTH
 });
 
 ymaps.load().then(maps => {
-    const map = new maps.Map('map-container', {
-        center: [55.76, 37.64],
-        zoom: 7
+    const map = new maps.Map(MAP_CONTAINER, {
+        center: [MAP_NORTH, MAP_EAST],
+        zoom: MAP_ZOOM
     });
 
     map.events.add('click', (e) => {
@@ -47,7 +62,7 @@ ymaps.load().then(maps => {
 
         Request.send({
             url: createGmxIdUrl(north, south),
-            data: {name: 'serviceCallback'}
+            data: {name: CALLBACK_NAME}
         })
         .then((data) => {
             const {features = []} = data;
