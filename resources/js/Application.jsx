@@ -3,9 +3,16 @@ import 'core-js/es6/set';
 import 'core-js/es6/promise';
 
 import ymaps from 'ymaps';
-import Axios from 'axios';
+import jsonp from 'jsonp';
 
-import {prepareCoordinates, createGmxIdUrl} from './utils/functions';
+import Request from './utils/request';
+
+import {
+    prepareCoordinates,
+    createGmxIdUrl,
+    serviceCallback
+} from './utils/functions';
+
 
 ymaps.load().then(maps => {
     const map = new maps.Map('map-container', {
@@ -20,14 +27,16 @@ ymaps.load().then(maps => {
         const preparedCoordinates = prepareCoordinates(coordinates);
         const {north, south} = preparedCoordinates;
 
-        Axios.get(createGmxIdUrl(north, south))
-        .then( (response) => {
-
-            console.log(response);
+        Request.send({
+            url: createGmxIdUrl(north, south),
+            data: {name: 'serviceCallback'}
         })
-        .catch((error) => console.error(error));
-
-        console.log(preparedCoordinates)
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     });
 })
 .catch(error => console.error('Failed to load Yandex Maps', error));
