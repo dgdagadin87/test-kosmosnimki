@@ -5,7 +5,7 @@ export default class Request {
 
     static send(config) {
 
-        const {mode = 'standart', url, data} = config;
+        const {mode = 'standart', url, data = {}} = config;
 
         if (mode !== 'standart') {
             return new Promise((resolve, reject) => {

@@ -70,8 +70,7 @@ ymaps.load().then(maps => {
 
             return Request.send({
                 mode: 'standart',
-                url: createMeteoDataUrl(gmx_id, currentYear),
-                data: {}
+                url: createMeteoDataUrl(gmx_id, currentYear)
             });
         })
         .then((data) => {
