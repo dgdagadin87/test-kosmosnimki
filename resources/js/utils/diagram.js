@@ -42,7 +42,7 @@ export default class DiagramComponent {
 
         this._diagram.update({
             labels: this._labels,
-            series: [this._series]
+            series: this._series
         });
     }
 }

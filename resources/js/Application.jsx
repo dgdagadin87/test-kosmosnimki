@@ -88,7 +88,10 @@ class Application {
         })
         .then((data) => {
 
-            this._diagram.update(prepareMeteoData(data, this._currentYear));
+            const preparedData = prepareMeteoData(data, this._currentYear);
+            const {currentYearData = [], allYearsData = []} = preparedData;
+
+            this._diagram.update([currentYearData, allYearsData]);
         })
         .catch((error) => console.error('Error, ', error));
     }

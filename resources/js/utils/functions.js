@@ -1,3 +1,5 @@
+import {YEAR_DIFF} from '../config/config';
+
 function prepareCoordinates(coordinates) {
 
     let north = coordinates[0].toFixed(2);
@@ -69,11 +71,36 @@ function prepareMeteoData(result, currentYear) {
         correctResult[year][month][day] = currentAvgTemp;
     }
 
-    const returnResult = [];
+    /* среднее за текущий год */
+    const currentYearData = countAvgTempetatureInYear(correctResult, currentYear);
 
-    for (let month in correctResult[currentYear]) {
+    /* среднемесячная норма */
+    let allYears = {};
+    for (let yearIndex in correctResult) {
+        allYears[yearIndex] = countAvgTempetatureInYear(correctResult, yearIndex)
+    }
+    let allYearsData = [];
+    for (let i = 0; i < 12; i++) {
+        let avgTemp = 0;
+        for (let yearIndex in allYears) {
+            avgTemp += allYears[yearIndex][i];
+        }
+        allYearsData.push(avgTemp/YEAR_DIFF);
+    }
 
-        const currentMonthData = correctResult[currentYear][month];
+    return {
+        currentYearData,
+        allYearsData
+    };
+}
+
+function countAvgTempetatureInYear(data, year) {
+
+    const yearData = [];
+
+    for (let month in data[year]) {
+
+        const currentMonthData = data[year][month];
         let counter = 0;
         let avgTemperature = 0;
 
@@ -82,20 +109,20 @@ function prepareMeteoData(result, currentYear) {
             avgTemperature += currentMonthData[day];
         }
 
-        returnResult.push(avgTemperature/counter);
+        yearData.push(avgTemperature/counter);
     }
 
-    const resultLength = returnResult.length;
+    const resultLength = yearData.length;
 
     if (resultLength < 12) {
         const lengthDiff = 12 - resultLength;
 
         for (let i = 0; i < lengthDiff; i++) {
-            returnResult.push(0);
+            yearData.push(0);
         }
     }
 
-    return returnResult;
+    return yearData;
 }
 
 function createGmxIdUrl(north, east) {
