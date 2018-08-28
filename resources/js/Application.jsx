@@ -22,9 +22,9 @@ import {
     MAP_ZOOM
 } from './config/config';
 
-import Diagram from './utils/diagram';
+import Diagram from './core/diagram';
 
-import Request from './utils/request';
+import Request from './core/request';
 
 import {
     prepareCoordinates,
