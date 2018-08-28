@@ -1,4 +1,4 @@
-import {YEAR_DIFF} from '../config/config';
+import {YEAR_DIFF, MONTH_ASSOC} from '../config/config';
 
 function prepareCoordinates(coordinates) {
 
@@ -79,6 +79,7 @@ function prepareMeteoData(result, currentYear) {
     for (let yearIndex in correctResult) {
         allYears[yearIndex] = countAvgTempetatureInYear(correctResult, yearIndex)
     }
+
     let allYearsData = [];
     for (let i = 0; i < 12; i++) {
         let avgTemp = 0;
@@ -101,6 +102,7 @@ function countAvgTempetatureInYear(data, year) {
     for (let month in data[year]) {
 
         const currentMonthData = data[year][month];
+        const monthIndex = MONTH_ASSOC[month];
         let counter = 0;
         let avgTemperature = 0;
 
@@ -109,7 +111,7 @@ function countAvgTempetatureInYear(data, year) {
             avgTemperature += currentMonthData[day];
         }
 
-        yearData.push(avgTemperature/counter);
+        yearData[monthIndex] = avgTemperature/counter;
     }
 
     const resultLength = yearData.length;
