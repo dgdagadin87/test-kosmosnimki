@@ -133,7 +133,7 @@ function createGmxIdUrl(north, east) {
 function createMeteoDataUrl(gmxId, year) {
 
     const formYear = year;
-    const toYear = parseInt(year) - 4;
+    const toYear = parseInt(year) - YEAR_DIFF;
 
     return `http://maps.kosmosnimki.ru/rest/ver1/layers/11A381497B4A4AE4A4ED6580E1674B72/search?query=year(%22date%22)<=${formYear}%20and%20year(%22date%22)>${toYear}%20and%20%22gridpoint_id%22=${gmxId}&apikey=6Q81IXBUQ7`;
 }
