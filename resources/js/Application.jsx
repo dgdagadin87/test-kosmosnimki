@@ -19,7 +19,7 @@ import {
     MAP_CONTAINER,
     MAP_EAST,
     MAP_NORTH,
-    MAP_ZOOM
+    MAP_ZOOM, YEAR_NUMBER
 } from './config/config';
 
 import Diagram from './core/diagram';
@@ -33,11 +33,17 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
+
 class Application {
 
     constructor() {
 
         this._currentYear = YEAR;
+
+        this._currentCoords = {
+            north: null,
+            east: null
+        };
 
         this._diagram = new Diagram({
             container: DIAGRAM_CONTAINER,
@@ -49,6 +55,16 @@ class Application {
         });
 
         this._map = ymaps;
+
+        this._select = document.getElementById('yearSelect');
+
+        this._init();
+    }
+
+    _init() {
+
+        this._select.addEventListener('change', this._selectChangeHandler.bind(this));
+        this._createYearSelectOptions();
     }
 
     run() {
@@ -64,12 +80,9 @@ class Application {
         .catch(error => console.error('Failed to load Yandex Maps', error));
     }
 
-    _mapClickHandler(e) {
+    _buildDiagram() {
 
-        const coordinates = e.get('coords');
-
-        const preparedCoordinates = prepareCoordinates(coordinates);
-        const {north, east} = preparedCoordinates;
+        const {north, east} = this._currentCoords;
 
         Request.send({
             mode: 'jsonp',
@@ -94,6 +107,49 @@ class Application {
             this._diagram.update([currentYearData, allYearsData]);
         })
         .catch((error) => console.error('Error, ', error));
+    }
+
+    _mapClickHandler(e) {
+
+        const coordinates = e.get('coords');
+
+        const preparedCoordinates = prepareCoordinates(coordinates);
+        const {north, east} = preparedCoordinates;
+
+        this._currentCoords = {
+            north, east
+        };
+
+        this._buildDiagram();
+    }
+
+    _selectChangeHandler(e) {
+
+        const {value = YEAR} = this._select;
+
+        this._currentYear = value;
+
+        const {north, east} = this._currentCoords;
+
+        if (!north || !east) {
+            alert('Кликните по карте');
+            return;
+        }
+
+        this._buildDiagram();
+    }
+
+    _createYearSelectOptions() {
+
+        const lastYear = YEAR - YEAR_NUMBER;
+
+        for (let i = YEAR; i >= lastYear; i--) {
+
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i;
+            this._select.appendChild(option);
+        }
     }
 }
 
