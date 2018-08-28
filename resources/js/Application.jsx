@@ -33,25 +33,38 @@ import {
     createMeteoDataUrl
 } from './utils/functions';
 
-let meteoData = [];
-let currentYear = YEAR;
+class Application {
 
-const diagram = new Diagram({
-    container: DIAGRAM_CONTAINER,
-    series: DIAGRAM_SERIES,
-    labels: DIAGRAM_LABELS,
-    width: DIAGRAM_WIDTH,
-    height: DIAGRAM_HEIGHT,
-    strokeWidth: DIAGRAM_STROKE_WIDTH
-});
+    constructor() {
 
-ymaps.load().then(maps => {
-    const map = new maps.Map(MAP_CONTAINER, {
-        center: [MAP_NORTH, MAP_EAST],
-        zoom: MAP_ZOOM
-    });
+        this._currentYear = YEAR;
 
-    map.events.add('click', (e) => {
+        this._diagram = new Diagram({
+            container: DIAGRAM_CONTAINER,
+            series: DIAGRAM_SERIES,
+            labels: DIAGRAM_LABELS,
+            width: DIAGRAM_WIDTH,
+            height: DIAGRAM_HEIGHT,
+            strokeWidth: DIAGRAM_STROKE_WIDTH
+        });
+
+        this._map = ymaps;
+    }
+
+    run() {
+
+        this._map.load().then(maps => {
+            const map = new maps.Map(MAP_CONTAINER, {
+                center: [MAP_NORTH, MAP_EAST],
+                zoom: MAP_ZOOM
+            });
+
+            map.events.add('click', this._mapClickHandler.bind(this));
+        })
+        .catch(error => console.error('Failed to load Yandex Maps', error));
+    }
+
+    _mapClickHandler(e) {
 
         const coordinates = e.get('coords');
 
@@ -70,15 +83,16 @@ ymaps.load().then(maps => {
 
             return Request.send({
                 mode: 'standart',
-                url: createMeteoDataUrl(gmx_id, currentYear)
+                url: createMeteoDataUrl(gmx_id, this._currentYear)
             });
         })
         .then((data) => {
-            meteoData = prepareMeteoData(data, currentYear);
 
-            diagram.update(meteoData);
+            this._diagram.update(prepareMeteoData(data, this._currentYear));
         })
         .catch((error) => console.error('Error, ', error));
-    });
-})
-.catch(error => console.error('Failed to load Yandex Maps', error));
+    }
+}
+
+const mainApplication = new Application();
+mainApplication.run();
