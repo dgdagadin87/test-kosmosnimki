@@ -56,11 +56,11 @@ ymaps.load().then(maps => {
         const coordinates = e.get('coords');
 
         const preparedCoordinates = prepareCoordinates(coordinates);
-        const {north, south} = preparedCoordinates;
+        const {north, east} = preparedCoordinates;
 
         Request.send({
             mode: 'jsonp',
-            url: createGmxIdUrl(north, south),
+            url: createGmxIdUrl(north, east),
             data: {name: CALLBACK_NAME}
         })
         .then((data) => {
