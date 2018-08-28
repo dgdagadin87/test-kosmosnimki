@@ -132,14 +132,15 @@ class Application {
 
         const {value = YEAR} = this._select;
 
-        this._currentYear = value;
-
         const {north, east} = this._currentCoords;
 
         if (!north || !east) {
+            this._select.value = YEAR;
             alert('Кликните по карте');
             return;
         }
+
+        this._currentYear = value;
 
         this._setYearLabel(value);
 
