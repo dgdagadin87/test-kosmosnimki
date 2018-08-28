@@ -65,6 +65,7 @@ class Application {
 
         this._select.addEventListener('change', this._selectChangeHandler.bind(this));
         this._createYearSelectOptions();
+        this._setYearLabel(YEAR);
     }
 
     run() {
@@ -136,6 +137,8 @@ class Application {
             return;
         }
 
+        this._setYearLabel(value);
+
         this._buildDiagram();
     }
 
@@ -150,6 +153,11 @@ class Application {
             option.text = i;
             this._select.appendChild(option);
         }
+    }
+
+    _setYearLabel(year) {
+
+        document.getElementById('currentYear').innerText = year;
     }
 }
 
