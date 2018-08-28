@@ -85,6 +85,8 @@ class Application {
 
         const {north, east} = this._currentCoords;
 
+        this._togglePreloader(true);
+
         Request.send({
             mode: 'jsonp',
             url: createGmxIdUrl(north, east),
@@ -104,6 +106,8 @@ class Application {
 
             const preparedData = prepareMeteoData(data, this._currentYear);
             const {currentYearData = [], allYearsData = []} = preparedData;
+
+            this._togglePreloader(false);
 
             this._diagram.update([currentYearData, allYearsData]);
         })
@@ -158,6 +162,11 @@ class Application {
     _setYearLabel(year) {
 
         document.getElementById('currentYear').innerText = year;
+    }
+
+    _togglePreloader(show = true) {
+
+        document.getElementById('preloader').style.display = show === true ? 'block' : 'none';
     }
 }
 
