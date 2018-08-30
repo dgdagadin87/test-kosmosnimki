@@ -8,7 +8,7 @@ var config = {
     devtool: 'eval-source-map',
     entry:  __dirname + "/resources/js/Application.jsx",
     output: {
-        path: __dirname + "/resources/js/bundle",
+        path: __dirname + "/docs",
         filename: "bundle.js"
     },
     module: {
