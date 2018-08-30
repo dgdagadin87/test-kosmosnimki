@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang="ru">
+    <head>
+        <title>Приложение "Метеоданные"</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta content="ie=edge" http-equiv="x-ua-compatible">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body id="main-body">
+        <div class="main-container">
+            <div id="map-container" />
+            <div class="diagram-container">
+                <div class="ct-chart ct-perfect-forth" />
+            </div>
+            <select class="select-year" id="yearSelect"></select>
+            <strong class="title">Соотношение температур</strong>
+            <div id="preloader" class="preloader" style="display:none;">Идет загрузка данных. Подождите...</div>
+            <div class="legend-container">
+                <div class="legend-item-container">
+                    <span class="legend-item-color current">&nbsp;</span>
+                    <span id="currentYear" class="legend-item-label"></span>
+                </div>
+                <div class="legend-item-container">
+                    <span class="legend-item-color all">&nbsp;</span>
+                    <span class="legend-item-label">Среднемесячная норма</span>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="bundle.js"></script>
+    </body>
+</html>
