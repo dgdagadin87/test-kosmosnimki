@@ -127,6 +127,28 @@ function countAvgTempetatureInYear(data, year) {
     return yearData;
 }
 
+function prepareForVizualization(currentYear, allYears) {
+
+    let returnFirst = [];
+    let returnSecond = [];
+
+    for (let i = 0; i < currentYear.length; i++) {
+        const currentValue = currentYear[i];
+        const allValue = allYears[i];
+
+        if (Math.abs(currentValue) < Math.abs(allValue)) {
+            returnFirst.push(allValue);
+            returnSecond.push(currentValue);
+        }
+        else {
+            returnFirst.push(currentValue);
+            returnSecond.push(allValue);
+        }
+    }
+
+    return [returnFirst, returnSecond];
+}
+
 function createGmxIdUrl(north, east) {
 
     return `https://maps.kosmosnimki.ru/rest/ver1/layers/35FB2C338FED4B64B7A326FBFE54BE73/search?query=%22lat%22=${north}and%22lon%22=${east}&apikey=6Q81IXBUQ7&WrapStyle=func&callbackname=serviceCallback`;
@@ -140,4 +162,4 @@ function createMeteoDataUrl(gmxId, year) {
     return `https://maps.kosmosnimki.ru/rest/ver1/layers/11A381497B4A4AE4A4ED6580E1674B72/search?query=year(%22date%22)<=${formYear}%20and%20year(%22date%22)>${toYear}%20and%20%22gridpoint_id%22=${gmxId}&apikey=6Q81IXBUQ7`;
 }
 
-export {prepareCoordinates, prepareMeteoData, createGmxIdUrl, createMeteoDataUrl};
+export {prepareCoordinates, prepareMeteoData, prepareForVizualization, createGmxIdUrl, createMeteoDataUrl};

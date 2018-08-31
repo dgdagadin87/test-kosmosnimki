@@ -30,7 +30,8 @@ import {
     prepareCoordinates,
     prepareMeteoData,
     createGmxIdUrl,
-    createMeteoDataUrl
+    createMeteoDataUrl,
+    prepareForVizualization
 } from './utils/functions';
 
 
@@ -39,6 +40,8 @@ class Application {
     constructor() {
 
         this._currentYear = YEAR;
+
+        this._data = DIAGRAM_SERIES;
 
         this._currentCoords = {
             north: null,
@@ -105,11 +108,16 @@ class Application {
         .then((data) => {
 
             const preparedData = prepareMeteoData(data, this._currentYear);
+            this._data = preparedData;
             const {currentYearData = [], allYearsData = []} = preparedData;
+
+            const vizualizationData = prepareForVizualization(currentYearData, allYearsData);
 
             this._togglePreloader(false);
 
-            this._diagram.update([currentYearData, allYearsData]);
+            this._diagram.setRawData([currentYearData, allYearsData]);
+
+            this._diagram.update([vizualizationData[0], vizualizationData[1]]);
         })
         .catch((error) => console.error('Error, ', error));
     }
